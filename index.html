@@ -3,11 +3,34 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/2.6.6/svg.min.js"></script>
     <script src="https://cdn.rawgit.com/okfn/csv.js/master/csv.js"></script>
+    <script src="https://cdn.rawgit.com/richtr/NoSleep.js/master/dist/NoSleep.js"></script>
     <script src="main.js"></script>
+    <style>
+        #startup {
+            display: none;
+        }
+        #chordname {
+            font-family: Helvetica;
+            font-size: 180px;
+        }
+        #startup {
+            zoom: 200%;
+        }
+    </style>
 </head>
-    <body onload="main()">
-        <button onclick="start()" style="display:none;" id="startbutton">Start</button>
-        <div id="chordname" style="font-family: Helvetica; font-size: 40px";></div>
-        <div id="drawarea"></div>
-    </body>
+<body onload="main()">
+    <div id="startup">
+        <input type="checkbox" id="showchord">Show chords?</input>
+        <button onclick="start()" id="startbutton">Start</button>
+        <div id="chordlist">
+        </div>
+    </div>
+    <table>
+        <tr>
+            <td><div id="drawarea"></div></td>
+            <td></td>
+            <td><div id="chordname"></div></td>
+        </tr>
+    </table>
+</body>
 </html>

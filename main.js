@@ -1,7 +1,5 @@
 
 var g_lessons = [ ];
-var g_interval = 5;
-var g_show = true;
 
 function onCSVLoaded(data)
 {
@@ -39,8 +37,31 @@ function onCSVLoaded(data)
         }
         console.log("Parsed data:");
         console.log(g_lessons);
+
+        var div = $("#chordlist");
+        for (var i = 0 ; i < g_lessons.length ; i++)
+        {
+            var txt = "" + g_lessons[i]["name"] + ": ";
+            for (var j = 0 ; j < g_lessons[i]["chords"].length ; j++)
+            {
+                if (j != 0)
+                    txt += ", ";
+                txt += g_lessons[i]["chords"][j]["name"];
+            }
+
+            var elem = $("<input>");
+            elem.attr("type", "checkbox");
+            elem.attr("checked", "true");
+
+            var p = $("<p>");
+            p.append(elem);
+            p.append($("<span>").text(txt));
+            div.append(p);
+
+            g_lessons[i]["checkbox"] = elem;
+        }
         
-        $("#startbutton").show();
+        $("#startup").show();
     });
 }
 
@@ -61,7 +82,7 @@ function drawChord(chord)
                 maxPos = pos;
         }
     }
-    console.log(chord);
+    //console.log(chord);
     var posh = 140;
     var posw = 100;
     var rad = posw/4;
@@ -103,15 +124,37 @@ function drawChord(chord)
     } 
 }
 
+var g_noSleep = new NoSleep();
+
 function start()
 {
+    $("#startup").hide();
+    g_noSleep.enable();
+
     var allchords = [ ];
     var interval = 5000;
+    var showChord = $("#showchord").is(":checked");
+
+    if (showChord)
+        $("#drawarea").show();
+    else
+        $("#drawarea").hide();
+
 
     for (var l = 0 ; l < g_lessons.length ; l++)
     {
-        for (var c = 0 ; c < g_lessons[l]["chords"].length ; c++)
-            allchords.push(g_lessons[l]["chords"][c]);
+        if (g_lessons[l]["checkbox"].is(":checked"))
+        {
+            for (var c = 0 ; c < g_lessons[l]["chords"].length ; c++)
+                allchords.push(g_lessons[l]["chords"][c]);
+        }
+    }
+
+    if (allchords.length == 0)
+    {
+        alert("No chords selected");
+        location.reload();
+        return;
     }
 
     var f = function()
