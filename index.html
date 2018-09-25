@@ -20,7 +20,8 @@
 </head>
 <body onload="main()">
     <div id="startup">
-        <input type="checkbox" id="showchord">Show chords?</input>
+        Show chords?<input type="checkbox" id="showchord">&nbsp;
+        Interval<input type="number" id="interval" step="any" style="width:40px" min="0" value="5">&nbsp;
         <button onclick="start()" id="startbutton">Start</button>
         <div id="chordlist">
         </div>

@@ -128,12 +128,36 @@ var g_noSleep = new NoSleep();
 
 function start()
 {
+    var interval = 5000;
+    try
+    {
+        var x = parseFloat($("#interval").val());
+        console.log(x);
+
+        if (x != x)
+            throw "NaN";
+
+        if (x < 0.050)
+            throw "Interval too small";
+        if (x > 30)
+            throw "Interval too large";
+
+        interval = x*1000;
+    }
+    catch(e)
+    {
+        console.log(e);
+        alert("Invalid time interval: " + e);
+        return;
+    }
+
     $("#startup").hide();
     g_noSleep.enable();
 
     var allchords = [ ];
-    var interval = 5000;
     var showChord = $("#showchord").is(":checked");
+
+
 
     if (showChord)
         $("#drawarea").show();
@@ -157,10 +181,20 @@ function start()
         return;
     }
 
+    var prevIdx = -1;
     var f = function()
     {
-        var idx = Math.floor(Math.random()*allchords.length);
+        var idx = prevIdx;
+        var counter = 10;
 
+        while (idx == prevIdx && counter > 0)
+        {
+            idx = Math.floor(Math.random()*allchords.length);
+            counter--;
+        }
+        console.log(counter);
+
+        prevIdx = idx;
         drawChord(allchords[idx]);
     }
 
